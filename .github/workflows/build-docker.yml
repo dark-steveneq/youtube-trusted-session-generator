@@ -47,3 +47,23 @@ jobs:
                   tags: quay.io/invidious/youtube-trusted-session-generator:webserver
                   cache-from: type=gha
                   cache-to: type=gha,mode=max
+            - name: Build and push headless
+              uses: docker/build-push-action@v5
+              with:
+                  context: .
+                  file: ./Dockerfile.headless
+                  platforms: linux/amd64,linux/arm64/v8
+                  push: true
+                  tags: quay.io/invidious/youtube-trusted-session-generator:headless
+                  cache-from: type=gha
+                  cache-to: type=gha,mode=max
+            - name: Build and push headless with HTTP API
+              uses: docker/build-push-action@v5
+              with:
+                  context: .
+                  file: ./Dockerfile.webserver.headless
+                  platforms: linux/amd64,linux/arm64/v8
+                  push: true
+                  tags: quay.io/invidious/youtube-trusted-session-generator:headless-webserver
+                  cache-from: type=gha
+                  cache-to: type=gha,mode=max

@@ -29,10 +29,12 @@ class PotokenExtractor:
 
     def __init__(self, loop: asyncio.AbstractEventLoop,
                  update_interval: float = 3600,
+                 headless: bool = False,
                  browser_path: Optional[Path] = None) -> None:
         self.update_interval: float = update_interval
         self.browser_path: Optional[Path] = browser_path
         self.profile_path = mkdtemp()  # cleaned up on exit by nodriver
+        self.headless = headless
         self._loop = loop
         self._token_info: Optional[TokenInfo] = None
         self._ongoing_update: asyncio.Lock = asyncio.Lock()
@@ -101,7 +103,7 @@ class PotokenExtractor:
             logger.info('update started')
             self._extraction_done.clear()
             try:
-                browser = await nodriver.start(headless=False,
+                browser = await nodriver.start(headless=self.headless,
                                                browser_executable_path=self.browser_path,
                                                user_data_dir=self.profile_path)
             except FileNotFoundError as e:

@@ -1,0 +1,6 @@
+FROM quay.io/invidious/youtube-trusted-session-generator:headless
+
+COPY docker/scripts/startup-webserver.sh ./
+
+# Run
+CMD [ "python", "potoken-generator.py", "--headless", "--bind", "0.0.0.0" ]

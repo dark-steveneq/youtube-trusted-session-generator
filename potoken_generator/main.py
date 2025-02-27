@@ -29,9 +29,9 @@ def print_token_and_exit(token_info: Optional[TokenInfo]):
 
 
 async def run(loop: asyncio.AbstractEventLoop, oneshot: bool,
-              update_interval: int, bind_address: str, port: int,
-              browser_path: Optional[Path] = None) -> None:
-    potoken_extractor = PotokenExtractor(loop, update_interval=update_interval, browser_path=browser_path)
+              headless: bool, update_interval: int, bind_address: str,
+              port: int, browser_path: Optional[Path] = None) -> None:
+    potoken_extractor = PotokenExtractor(loop, update_interval=update_interval, browser_path=browser_path, headless=headless)
     token = await potoken_extractor.run_once()
     if oneshot:
         print_token_and_exit(token)
@@ -74,6 +74,8 @@ Retrieve potoken using Chromium runned by nodriver, serve it on a json endpoint
     parser = argparse.ArgumentParser(description=description, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument('-o', '--oneshot', action='store_true', default=False,
                         help='Do not start server. Generate token once, print it and exit')
+    parser.add_argument('-H', '--headless', action='store_true', default=False,
+                        help='Start Chromium without window, useful for headless environments')
     parser.add_argument('--update-interval', '-u', type=int, default=300,
                         help='How ofthen new token is generated, in seconds (default: %(default)s)')
     parser.add_argument('--port', '-p', type=int, default=8080,
@@ -93,6 +95,7 @@ def main() -> None:
                     update_interval=args.update_interval,
                     bind_address=args.bind,
                     port=args.port,
+                    headless=args.headless,
                     browser_path=args.chrome_path
                     )
     loop.run_until_complete(main_task)
