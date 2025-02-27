@@ -62,4 +62,8 @@ Run the program: `docker run -p 8080:8080 quay.io/invidious/youtube-trusted-sess
 
 Send your requests to http://localhost:8080/token in order to obtain your po_token.
 
+## Headless mode
+If for whatever reason you can't or don't want to run the whole Chromium GUI, you can use `quay.io/invidious/youtube-trusted-session-generator:headless` and `quay.io/invidious/youtube-trusted-session-generator:headless-webserver` Docker images, or if you're not using Docker, you can use the `--headless` argument if you're running the script without Docker
+
+
 You can also force refresh the po_token in the cache by sending a request to http://localhost:8080/update.
